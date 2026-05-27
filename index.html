@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Gatot Kaca AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+:root{
+  --ink:#07070f;--ink2:#09091a;--ink3:#0d0d1e;
+  --panel:#111128;--panel2:#171730;--panel3:#1d1d3a;
+  --rim:rgba(180,165,255,0.07);--rim2:rgba(180,165,255,0.13);--rim3:rgba(180,165,255,0.24);
+  --gold:#c8975a;--gold2:#b07840;--gold3:#e8b87a;
+  --gold-g:rgba(200,151,90,0.16);--gold-s:rgba(200,151,90,0.08);
+  --violet:#8b79ea;--violet-s:rgba(139,121,234,0.1);
+  --teal:#4dc4ae;--teal-s:rgba(77,196,174,0.1);
+  --rose:#e86060;--rose-s:rgba(232,96,96,0.1);
+  --amber:#e8a840;--amber-s:rgba(232,168,64,0.1);
+  --text:#e2ddf2;--text2:#7a7299;--text3:#363052;
+  --r:14px;--rs:9px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--ink);color:var(--text);
+  height:100vh;display:flex;flex-direction:column;overflow:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 55% at 10% -5%,rgba(200,151,90,0.055) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 45% at 90% 105%,rgba(139,121,234,0.06) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 60% at 50% 50%,rgba(77,196,174,0.018) 0%,transparent 70%);
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size:200px 200px;opacity:.7;
+}
+
+/* ══ HEADER ══ */
+header{
+  position:relative;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:62px;
+  background:rgba(7,7,15,0.96);
+  border-bottom:1px solid var(--rim);
+  backdrop-filter:blur(32px);gap:12px;
+}
+.hl{display:flex;align-items:center;gap:13px}
+.logo{
+  width:38px;height:38px;border-radius:13px;flex-shrink:0;
+  background:linear-gradient(145deg,#d4a06a 0%,#a87040 55%,#8a5628 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 28px rgba(200,151,90,0.32),inset 0 1px 0 rgba(255,255,255,0.14);
+  font-size:19px;position:relative;overflow:hidden;
+}
+.logo::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,0.14),transparent 55%)}
+.brand-name{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;letter-spacing:0.01em;
+  background:linear-gradient(110deg,var(--gold3) 0%,var(--gold) 50%,var(--gold2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.brand-sub{font-size:9.5px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-top:1px}
+.hr{display:flex;align-items:center;gap:8px}
+.pill-online{
+  display:flex;align-items:center;gap:6px;padding:4px 11px;
+  background:var(--teal-s);border:1px solid rgba(77,196,174,0.2);
+  border-radius:50px;font-size:10.5px;font-weight:600;color:var(--teal);letter-spacing:0.04em;
+}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(77,196,174,0.5)}50%{opacity:.65;box-shadow:0 0 0 5px rgba(77,196,174,0)}}
+#menuBtn{
+  display:none;background:none;border:1px solid var(--rim2);
+  color:var(--text2);cursor:pointer;padding:7px;border-radius:var(--rs);transition:all .2s;
+}
+#menuBtn:hover{background:var(--panel2);border-color:var(--rim3)}
+.sw{position:relative}
+.sw::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);pointer-events:none}
+select.hs{
+  appearance:none;padding:6px 28px 6px 12px;border-radius:var(--rs);
+  border:1px solid var(--rim2);background:var(--panel);color:var(--text2);
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
+  cursor:pointer;outline:none;transition:all .2s;
+}
+select.hs:hover{border-color:rgba(200,151,90,0.4);background:var(--panel2);color:var(--text)}
+select.hs option{background:var(--panel)}
+.deep-btn{
+  display:flex;align-items:center;gap:7px;padding:6px 13px;
+  border-radius:50px;border:1px solid var(--rim2);background:var(--panel);
+  cursor:pointer;transition:all .25s;font-size:11.5px;font-weight:600;
+  color:var(--text2);user-select:none;font-family:'DM Sans',sans-serif;
+}
+.deep-btn:hover{border-color:rgba(232,168,64,0.4);color:var(--text)}
+.deep-btn.on{background:var(--amber-s);border-color:rgba(232,168,64,0.36);color:var(--amber);box-shadow:0 0 18px rgba(232,168,64,0.09)}
+.deep-btn.on .di{animation:flicker 2.8s ease-in-out infinite}
+@keyframes flicker{0%,100%{filter:drop-shadow(0 0 0 rgba(232,168,64,0))}50%{filter:drop-shadow(0 0 7px rgba(232,168,64,0.75))}}
+
+/* ══ LAYOUT ══ */
+.wrap{display:flex;flex:1;overflow:hidden;position:relative;z-index:1}
+
+/* ══ SIDEBAR ══ */
+#sidebar{
+  width:256px;background:var(--ink2);border-right:1px solid var(--rim);
+  display:flex;flex-direction:column;padding:14px 11px;gap:3px;
+  overflow-y:auto;scrollbar-width:none;
+  transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+#sidebar::-webkit-scrollbar{display:none}
+.new-btn{
+  width:100%;display:flex;align-items:center;gap:8px;padding:10px 14px;margin-bottom:10px;
+  background:linear-gradient(135deg,rgba(200,151,90,0.1),rgba(200,151,90,0.05));
+  border:1px solid rgba(200,151,90,0.22);border-radius:var(--rs);color:var(--gold);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .22s;
+}
+.new-btn:hover{background:rgba(200,151,90,0.17);border-color:rgba(200,151,90,0.45);transform:translateY(-1px);box-shadow:0 5px 22px rgba(200,151,90,0.14)}
+.sb-label{font-size:9.5px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);padding:4px 6px;margin:8px 0 2px}
+.hi{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 10px;border-radius:var(--rs);cursor:pointer;
+  transition:all .15s;border:1px solid transparent;gap:8px;
+}
+.hi:hover{background:var(--panel);border-color:var(--rim)}
+.hi.on{background:var(--gold-s);border-color:rgba(200,151,90,0.22)}
+.ht{font-size:12.5px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;transition:color .15s}
+.hi:hover .ht,.hi.on .ht{color:var(--text)}
+.dx{font-size:16px;color:var(--text3);opacity:0;transition:all .15s;flex-shrink:0;cursor:pointer;line-height:1}
+.hi:hover .dx{opacity:1}
+.dx:hover{color:var(--rose)!important}
+
+/* ══ CHAT MAIN ══ */
+.chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* ══ EMPTY ══ */
+.empty{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;padding:40px;animation:rise .55s ease;
+}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.e-logo{
+  width:68px;height:68px;border-radius:24px;
+  background:linear-gradient(145deg,#d4a06a,#a87040,#8a5628);
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+  box-shadow:0 18px 52px rgba(200,151,90,0.3),0 0 0 1px rgba(200,151,90,0.22),inset 0 1px 0 rgba(255,255,255,0.13);
+  position:relative;overflow:hidden;
+}
+.e-logo::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,255,255,0.13),transparent 55%)}
+.e-title{
+  font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;letter-spacing:-0.02em;
+  background:linear-gradient(135deg,var(--text) 0%,var(--text2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.e-sub{font-size:12.5px;color:var(--text3);text-align:center;max-width:340px;line-height:1.78}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:8px;max-width:540px}
+.chip{
+  padding:7px 15px;border:1px solid var(--rim2);border-radius:50px;
+  font-size:11.5px;color:var(--text2);cursor:pointer;background:var(--panel);transition:all .22s;
+}
+.chip:hover{background:var(--gold-s);border-color:rgba(200,151,90,0.38);color:var(--gold);transform:translateY(-1px)}
+.chip.img:hover{background:var(--violet-s);border-color:rgba(139,121,234,0.38);color:var(--violet)}
+.chip.vid:hover{background:var(--rose-s);border-color:rgba(232,96,96,0.32);color:var(--rose)}
+
+/* ══ MESSAGES ══ */
+.msgs{
+  flex:1;padding:26px 24px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:22px;
+  scrollbar-width:thin;scrollbar-color:var(--panel3) transparent;
+}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:var(--panel3);border-radius:3px}
+.row{display:flex;gap:12px;align-items:flex-start;animation:rise .3s ease}
+.row.user{flex-direction:row-reverse}
+.av{
+  width:30px;height:30px;border-radius:10px;flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+.av.bot{background:linear-gradient(145deg,#d4a06a,#8a5628);box-shadow:0 4px 16px rgba(200,151,90,0.28)}
+.av.usr{background:var(--panel2);border:1px solid var(--rim2)}
+.mb{display:flex;flex-direction:column;gap:5px;max-width:75%}
+.row.user .mb{align-items:flex-end}
+.msg{padding:13px 18px;border-radius:18px;line-height:1.72;font-size:13.5px}
+.msg.user{
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);
+  border-top-right-radius:5px;color:rgba(255,255,255,0.97);
+  box-shadow:0 5px 24px rgba(200,151,90,0.28);
+}
+.msg.bot{
+  background:var(--panel);border:1px solid var(--rim);
+  border-top-left-radius:5px;color:var(--text);
+}
+.msg.bot.deep{
+  border-color:rgba(232,168,64,0.2);
+  background:linear-gradient(145deg,var(--panel) 0%,rgba(232,168,64,0.04) 100%);
+}
+.dbadge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:9.5px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;
+  color:var(--amber);background:var(--amber-s);
+  border:1px solid rgba(232,168,64,0.24);padding:2px 9px;border-radius:50px;margin-bottom:9px;
+}
+
+/* ══ MARKDOWN ══ */
+.md{font-size:13.5px;line-height:1.78}
+.md h1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin:16px 0 10px;letter-spacing:-0.01em}
+.md h2{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;margin:14px 0 8px;border-bottom:1px solid var(--rim);padding-bottom:7px}
+.md h3{font-size:14px;font-weight:600;margin:12px 0 6px;color:var(--gold)}
+.md h4{font-size:13.5px;font-weight:600;margin:10px 0 5px;color:var(--text2)}
+.md p{margin:7px 0;color:var(--text)}.md p:first-child{margin-top:0}.md p:last-child{margin-bottom:0}
+.md strong{font-weight:600;color:var(--text)}.md em{font-style:italic;color:var(--text2)}
+.md ul,.md ol{padding-left:20px;margin:8px 0}.md li{margin:4px 0;color:var(--text)}.md li::marker{color:var(--gold)}
+.md blockquote{border-left:2px solid var(--gold2);padding:8px 15px;margin:12px 0;background:var(--gold-s);border-radius:0 var(--rs) var(--rs) 0;color:var(--text2);font-style:italic}
+.md code:not(pre code){background:var(--panel2);border:1px solid var(--rim2);padding:1px 6px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--teal)}
+.md pre{background:#09090f;border:1px solid var(--rim);border-radius:var(--rs);padding:0;margin:12px 0;overflow:hidden}
+.chdr{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:rgba(255,255,255,0.025);border-bottom:1px solid var(--rim)}
+.clang{font-size:10.5px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.ccopy{font-size:10px;font-weight:600;color:var(--text3);cursor:pointer;padding:2px 8px;border:1px solid var(--rim);border-radius:4px;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s}
+.ccopy:hover{color:var(--gold);border-color:rgba(200,151,90,0.4);background:var(--gold-s)}
+.md pre code{display:block;padding:13px 16px;font-size:11.5px;overflow-x:auto;font-family:'JetBrains Mono',monospace;line-height:1.65}
+.md table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12.5px}
+.md th{background:var(--panel2);color:var(--text);font-weight:600;padding:8px 12px;text-align:left;border:1px solid var(--rim2)}
+.md td{padding:7px 12px;border:1px solid var(--rim);color:var(--text2)}
+.md tr:nth-child(even) td{background:rgba(255,255,255,0.012)}
+.md a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,151,90,0.28)}
+.md a:hover{color:var(--text);border-bottom-color:var(--gold)}
+.md hr{border:none;border-top:1px solid var(--rim);margin:16px 0}
+
+/* ══ META ══ */
+.meta{display:flex;align-items:center;gap:6px;padding:0 2px;flex-wrap:wrap}
+.mtime{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.mb2{padding:2px 9px;font-size:10px;font-family:'DM Sans',sans-serif;font-weight:600;border-radius:5px;border:1px solid var(--rim);cursor:pointer;background:transparent;color:var(--text3);transition:all .15s}
+.mb2:hover{background:var(--panel2);color:var(--text2);border-color:var(--rim2)}
+.mb2.ok{color:var(--teal);border-color:rgba(77,196,174,0.3);background:var(--teal-s)}
+.wc{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+
+/* ══ STREAM CURSOR ══ */
+.sc{display:inline-block;width:2px;height:14px;background:var(--gold);border-radius:2px;margin-left:2px;vertical-align:middle;animation:blink .9s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ══ TYPING DOTS ══ */
+.trow{display:flex;gap:12px;align-items:flex-start;animation:rise .3s ease}
+.tbub{padding:14px 17px;background:var(--panel);border:1px solid var(--rim);border-radius:18px;border-top-left-radius:5px;display:flex;gap:5px;align-items:center}
+.td{width:5px;height:5px;border-radius:50%;background:var(--text3)}
+.td:nth-child(1){animation:tdot 1.4s infinite 0s}
+.td:nth-child(2){animation:tdot 1.4s infinite .15s}
+.td:nth-child(3){animation:tdot 1.4s infinite .3s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.3}30%{transform:translateY(-4px);opacity:1}}
+
+/* ══ IMAGE MSG ══ */
+.msg.imgm{background:var(--panel);border:1px solid var(--rim);border-top-left-radius:5px;padding:10px;overflow:hidden;max-width:500px}
+.msg.imgm img{display:block;max-width:100%;border-radius:10px;cursor:zoom-in;transition:transform .25s,box-shadow .25s}
+.msg.imgm img:hover{transform:scale(1.015);box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.icap{font-size:11.5px;color:var(--text3);margin-top:8px;font-style:italic}
+.iload{display:flex;flex-direction:column;gap:10px;align-items:center;padding:26px 44px;color:var(--text2);font-size:12.5px;min-width:260px}
+.ibar{width:200px;height:2px;background:var(--rim);border-radius:2px;overflow:hidden}
+.ibar-f{height:100%;background:linear-gradient(90deg,var(--gold),var(--violet));border-radius:2px;animation:iprg 2.6s ease-in-out infinite}
+@keyframes iprg{0%{width:0}50%{width:68%}90%{width:92%}100%{width:100%}}
+.ibadge-wrap{display:flex;align-items:center;gap:6px;margin-top:2px}
+.igenq{font-size:10.5px;color:var(--text3);padding:2px 8px;background:var(--gold-s);border:1px solid rgba(200,151,90,0.2);border-radius:50px;color:var(--gold)}
+
+/* ══ VIDEO MSG ══ */
+.msg.vidm{background:var(--panel);border:1px solid var(--rim);border-top-left-radius:5px;padding:10px;overflow:hidden;max-width:500px}
+.vcw{position:relative;border-radius:10px;overflow:hidden;background:#000;cursor:pointer}
+.vcw canvas{display:block;width:100%;border-radius:10px}
+.vov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);opacity:0;transition:opacity .2s;border-radius:10px;pointer-events:none}
+.vcw:hover .vov{opacity:1}
+.vpi{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,0.25);font-size:18px}
+.vbadge{position:absolute;top:8px;right:8px;background:rgba(200,151,90,0.9);color:#1a1000;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:0.07em}
+.vload{display:flex;flex-direction:column;gap:10px;align-items:center;padding:24px 40px;color:var(--text2);font-size:12.5px}
+.vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:220px;margin:4px 0}
+.vft{width:50px;height:36px;border-radius:4px;background:var(--panel2);border:1px solid var(--rim);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.vft img{width:100%;height:100%;object-fit:cover}
+.sp{width:11px;height:11px;border:2px solid var(--rim2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vpo{width:200px;height:3px;background:var(--rim);border-radius:3px;overflow:hidden}
+.vpi2{height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:3px;width:0%;transition:width .4s}
+.vst{font-size:11px;color:var(--text3)}
+
+/* ══ QUEUE INDICATOR ══ */
+#qbar{
+  position:fixed;top:70px;right:18px;z-index:200;
+  background:var(--panel2);border:1px solid rgba(200,151,90,0.24);
+  border-radius:50px;padding:5px 13px 5px 10px;
+  font-size:11px;font-weight:600;color:var(--gold);
+  display:none;align-items:center;gap:7px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.45);
+  transition:opacity .3s;
+}
+#qbar.show{display:flex}
+.qsp{width:8px;height:8px;border:1.5px solid rgba(200,151,90,0.3);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
+
+/* ══ MODE TABS ══ */
+.modes{display:flex;gap:5px;margin-bottom:10px}
+.mtab{
+  display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:50px;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;border:1px solid var(--rim2);background:transparent;color:var(--text2);transition:all .22s;
+}
+.mtab:hover{background:var(--panel2);color:var(--text)}
+.mtab.on[data-m="chat"]{background:var(--gold-s);border-color:rgba(200,151,90,0.32);color:var(--gold)}
+.mtab.on[data-m="image"]{background:var(--violet-s);border-color:rgba(139,121,234,0.32);color:var(--violet)}
+.mtab.on[data-m="video"]{background:var(--rose-s);border-color:rgba(232,96,96,0.28);color:var(--rose)}
+
+/* ══ INPUT AREA ══ */
+.iarea{padding:10px 22px 18px;background:var(--ink2);border-top:1px solid var(--rim)}
+.ibox{
+  display:flex;align-items:flex-end;gap:8px;
+  background:var(--panel);border:1px solid var(--rim2);
+  border-radius:16px;padding:10px 10px 10px 17px;
+  transition:border-color .22s,box-shadow .22s;
+}
+.ibox:focus-within{border-color:rgba(200,151,90,0.5);box-shadow:0 0 0 4px rgba(200,151,90,0.07)}
+.ibox.mi:focus-within{border-color:rgba(139,121,234,0.5);box-shadow:0 0 0 4px rgba(139,121,234,0.07)}
+.ibox.mv:focus-within{border-color:rgba(232,96,96,0.42);box-shadow:0 0 0 4px rgba(232,96,96,0.06)}
+textarea#inp{
+  flex:1;background:transparent;border:none;outline:none;resize:none;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:13.5px;line-height:1.6;
+  max-height:140px;min-height:24px;overflow-y:auto;scrollbar-width:none;
+}
+textarea#inp::-webkit-scrollbar{display:none}
+textarea#inp::placeholder{color:var(--text3)}
+.sbtn{
+  width:38px;height:38px;border-radius:11px;border:none;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .22s;box-shadow:0 2px 16px rgba(200,151,90,0.3);
+}
+.sbtn:hover{transform:scale(1.07);box-shadow:0 4px 24px rgba(200,151,90,0.42)}
+.sbtn:active{transform:scale(.95)}
+.sbtn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.sbtn svg{width:15px;height:15px;fill:none;stroke:#1a1000;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.ihint{font-size:10.5px;color:var(--text3);text-align:center;margin-top:8px}
+
+/* ══ SCROLL BTN ══ */
+#scb{
+  position:fixed;bottom:136px;right:22px;
+  width:36px;height:36px;border-radius:11px;
+  border:1px solid var(--rim2);background:var(--panel2);
+  color:var(--text2);font-size:14px;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  z-index:999;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+#scb:hover{background:var(--gold);color:#1a1000;border-color:var(--gold);transform:translateY(-2px)}
+
+/* ══ LIGHTBOX ══ */
+#lb{position:fixed;inset:0;background:rgba(0,0,0,0.95);display:none;align-items:center;justify-content:center;z-index:2000;cursor:zoom-out;padding:20px}
+#lb.on{display:flex}
+#lb img{max-width:90vw;max-height:90vh;border-radius:14px;box-shadow:0 20px 80px rgba(0,0,0,0.8)}
+#lb-x{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:none;color:var(--text2);font-size:18px;cursor:pointer;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+#lb-x:hover{background:rgba(255,255,255,0.14);color:var(--text)}
+
+/* ══ MODAL ══ */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal-bg.on{display:flex}
+.modal{background:var(--ink3);border:1px solid var(--rim2);border-radius:var(--r);padding:28px 24px;width:90%;max-width:320px;animation:pop .26s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.86);opacity:0}to{transform:scale(1);opacity:1}}
+.mac{display:flex;gap:10px;margin-top:20px}
+.mac button{flex:1;padding:10px;border-radius:var(--rs);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;border:1px solid var(--rim2);background:var(--panel);color:var(--text2);transition:all .2s}
+.mac button:hover{background:var(--panel2);color:var(--text)}
+.mac .danger{background:var(--rose-s);border-color:rgba(232,96,96,0.28);color:var(--rose)}
+.mac .danger:hover{background:rgba(232,96,96,0.16)}
+
+/* ══ MOBILE ══ */
+@media(max-width:768px){
+  #menuBtn{display:flex;align-items:center;justify-content:center}
+  #sidebar{position:absolute;left:-270px;top:62px;height:calc(100vh - 62px);z-index:100;box-shadow:4px 0 30px rgba(0,0,0,0.7)}
+  #sidebar.on{transform:translateX(270px)}
+  .mb{max-width:88%}
+  .brand-sub,.pill-online{display:none}
+  .deep-btn span:last-child{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <button id="menuBtn" onclick="toggleSB()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="logo">🤖</div>
+    <div>
+      <div class="brand-name">Gatot Kaca AI</div>
+      <div class="brand-sub">Intelligence Suite · v2</div>
+    </div>
+  </div>
+  <div class="hr">
+    <div class="pill-online"><div class="dot"></div>Online</div>
+    <button class="deep-btn" id="deepBtn" onclick="toggleDeep()">
+      <span class="di" style="font-size:14px">🧠</span>
+      <span>Deep Think</span>
+    </button>
+    <div class="sw">
+      <select id="model" class="hs">
+        <option value="llama4">LLaMA 4 Maverick ⚡</option>
+        <option value="deepseek">DeepSeek V3 🔬</option>
+        <option value="gpt4o">GPT-4o Mini 🎯</option>
+        <option value="gemini">Gemini 2.0 Flash 💎</option>
+        <option value="mistral">Mistral 8x22B 🚀</option>
+        <option value="qwen">Qwen 2.5 72B 🌐</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<!-- Active image queue indicator -->
+<div id="qbar">
+  <div class="qsp"></div>
+  <span id="qtext">0 gambar diproses</span>
+</div>
+
+<div class="wrap">
+  <div id="sidebar">
+    <button class="new-btn" onclick="newChat()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Chat Baru
+    </button>
+    <div class="sb-label">Riwayat</div>
+    <div id="hist"></div>
+  </div>
+
+  <div class="chat-main">
+    <div class="msgs" id="msgs">
+      <div class="empty" id="empty">
+        <div class="e-logo">🤖</div>
+        <div class="e-title">Mulai Percakapan</div>
+        <div class="e-sub">Asisten AI dengan deep reasoning, streaming real-time, generate gambar tak terbatas & video animasi</div>
+        <div class="chips">
+          <div class="chip" onclick="useChip(this,'chat')">💡 Jelaskan quantum computing</div>
+          <div class="chip" onclick="useChip(this,'chat')">🔬 Machine learning vs deep learning</div>
+          <div class="chip" onclick="useChip(this,'chat')">💻 Buat REST API Python FastAPI</div>
+          <div class="chip" onclick="useChip(this,'chat')">🌏 Strategi ekonomi Indonesia 2030</div>
+          <div class="chip img" onclick="useChip(this,'image')">🖼️ Astronaut riding dragon over Jakarta</div>
+          <div class="chip img" onclick="useChip(this,'image')">🖼️ Neon cyberpunk Borobudur at night</div>
+          <div class="chip vid" onclick="useChip(this,'video')">🎬 Ocean waves golden sunset cinematic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="iarea">
+      <div class="modes">
+        <button class="mtab on" data-m="chat" onclick="setMode('chat')">💬 Chat</button>
+        <button class="mtab" data-m="image" onclick="setMode('image')">🖼️ Gambar ∞</button>
+        <button class="mtab" data-m="video" onclick="setMode('video')">🎬 Video</button>
+      </div>
+      <div class="ibox" id="ibox">
+        <textarea id="inp" placeholder="Tulis pesan... (Shift+Enter baris baru)" rows="1"></textarea>
+        <button class="sbtn" id="sendBtn" onclick="sendMsg()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="ihint">
+        Enter kirim · Shift+Enter baris baru ·
+        Mode: <span id="mlabel" style="color:var(--gold)">Chat</span> ·
+        <span id="imgqhint" style="display:none;color:var(--gold2)">Generate gambar paralel tak terbatas ∞</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="delModal" class="modal-bg">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:30px;margin-bottom:12px">🗑️</div>
+    <h3 style="font-size:16px;font-weight:600;margin-bottom:8px;font-family:'Cormorant Garamond',serif">Hapus chat ini?</h3>
+    <p style="font-size:12.5px;color:var(--text2);line-height:1.6">Semua pesan akan dihapus secara permanen.</p>
+    <div class="mac">
+      <button id="cancelBtn">Batal</button>
+      <button id="confirmBtn" class="danger">Hapus</button>
+    </div>
+  </div>
+</div>
+
+<div id="lb" onclick="closeLB()">
+  <button id="lb-x" onclick="closeLB()">✕</button>
+  <img id="lb-img" src="" alt=""/>
+</div>
+
+<button id="scb" onclick="scrollBot()">⬇</button>
+
+<script>
+// ── CONFIG ───────────────────────────────────────────────────
+const OR_KEY='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';
+const OR_URL='https://openrouter.ai/api/v1/chat/completions';
+const MODEL_MAP={
+  llama4:'meta-llama/llama-4-maverick',
+  deepseek:'deepseek/deepseek-chat-v3-0324',
+  gpt4o:'openai/gpt-4o-mini',
+  gemini:'google/gemini-2.0-flash-001',
+  mistral:'mistralai/mixtral-8x22b-instruct',
+  qwen:'qwen/qwen-2.5-72b-instruct'
+};
+const SYS_BASE=`Kamu adalah Gatot Kaca AI — asisten AI cerdas, analitis, dan berpengetahuan luas.
+Berikan jawaban komprehensif dan terstruktur menggunakan Markdown.
+Gunakan heading (##,###), bold, italic, kode, tabel, bullet points.
+Untuk teknis/coding: sertakan kode lengkap dengan penjelasan.
+Untuk konseptual: jelaskan dari dasar, berikan analogi.
+Gunakan bahasa Indonesia natural. Akhiri dengan ringkasan praktis.`;
+const SYS_DEEP=`Kamu adalah Gatot Kaca AI dalam mode Deep Think — reasoning dan analisis tingkat tinggi.
+
+## Standar Deep Think:
+1. **Analisis menyeluruh** — berbagai sudut pandang (teknis, praktis, historis, komparatif)
+2. **Kedalaman konseptual** — jelaskan "mengapa" di balik setiap konsep
+3. **Contoh konkret** — minimal 2-3 contoh nyata atau kode siap pakai
+4. **Trade-offs** — pro/kontra, kapan digunakan, kapan tidak
+5. **Perbandingan** — bandingkan dengan alternatif yang relevan
+6. **Best practices** — pola yang direkomendasikan industri
+Format: Markdown lengkap. Panjang: 400-800+ kata. Sertakan TL;DR di akhir.
+Jawab dalam bahasa Indonesia yang cerdas dan informatif.`;
+
+// ── STATE ────────────────────────────────────────────────────
+let chats=[];
+try{chats=JSON.parse(localStorage.getItem('gk_v3')||'[]')}catch(e){chats=[]}
+let curIdx=null, curMode='chat', deepOn=false, chatGenerating=false;
+let imgQueueCount=0;  // Tracks concurrent image generations (unlimited)
+const videoAnimators={};
+
+const msgsEl=document.getElementById('msgs');
+const emptyEl=document.getElementById('empty');
+const inpEl=document.getElementById('inp');
+
+// ── AUTO RESIZE ──────────────────────────────────────────────
+inpEl.addEventListener('input',()=>{
+  inpEl.style.height='auto';
+  inpEl.style.height=Math.min(inpEl.scrollHeight,140)+'px';
+});
+inpEl.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}
+});
+
+// ── SCROLL ───────────────────────────────────────────────────
+function scrollBot(){msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'})}
+msgsEl.addEventListener('scroll',()=>{
+  document.getElementById('scb').style.display=
+    (msgsEl.scrollHeight-msgsEl.scrollTop<=msgsEl.clientHeight+80)?'none':'flex';
+});
+
+// ── SIDEBAR ──────────────────────────────────────────────────
+function toggleSB(){document.getElementById('sidebar').classList.toggle('on')}
+
+// ── DEEP THINK ───────────────────────────────────────────────
+function toggleDeep(){
+  deepOn=!deepOn;
+  document.getElementById('deepBtn').classList.toggle('on',deepOn);
+  toast(deepOn?'🧠 Deep Think aktif — jawaban lebih mendalam':'💬 Mode normal aktif');
+}
+
+// ── MODE ─────────────────────────────────────────────────────
+function setMode(m){
+  curMode=m;
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+  const ibox=document.getElementById('ibox');
+  const ml=document.getElementById('mlabel');
+  const qh=document.getElementById('imgqhint');
+  const sb=document.getElementById('sendBtn');
+  ibox.className='ibox';
+  if(m==='chat'){
+    inpEl.placeholder='Tulis pesan... (Shift+Enter baris baru)';
+    ml.textContent='Chat';ml.style.color='var(--gold)';
+    qh.style.display='none';
+    sb.disabled=chatGenerating;
+  } else if(m==='image'){
+    ibox.classList.add('mi');
+    inpEl.placeholder='Deskripsikan gambar... cth: astronaut riding dragon over Jakarta at sunset';
+    ml.textContent='Generate Gambar ∞';ml.style.color='var(--violet)';
+    qh.style.display='inline';
+    sb.disabled=false; // Image mode: never disable send
+  } else if(m==='video'){
+    ibox.classList.add('mv');
+    inpEl.placeholder='Deskripsikan video... cth: ocean waves crashing at golden hour cinematic';
+    ml.textContent='Generate Video';ml.style.color='var(--rose)';
+    qh.style.display='none';
+    sb.disabled=chatGenerating;
+  }
+  inpEl.focus();
+}
+
+// ── IMAGE QUEUE UI ───────────────────────────────────────────
+function updateQueue(delta){
+  imgQueueCount=Math.max(0,imgQueueCount+delta);
+  const bar=document.getElementById('qbar');
+  document.getElementById('qtext').textContent=
+    imgQueueCount===1?'1 gambar diproses':imgQueueCount+' gambar diproses';
+  imgQueueCount>0?bar.classList.add('show'):bar.classList.remove('show');
+}
+
+// ── UTILS ────────────────────────────────────────────────────
+function useChip(el,m){
+  setMode(m);
+  inpEl.value=el.innerText.replace(/^[^\s]+\s/,'');
+  inpEl.dispatchEvent(new Event('input'));inpEl.focus();
+}
+function getTime(){return new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}
+function toast(msg){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:84px;left:50%;transform:translateX(-50%);
+    background:var(--panel2);border:1px solid var(--rim2);color:var(--text);
+    padding:8px 18px;border-radius:50px;font-size:12px;z-index:9999;
+    animation:rise .3s ease;box-shadow:0 4px 24px rgba(0,0,0,0.55);white-space:nowrap;`;
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2600);
+}
+function wc(s){return s.trim().split(/\s+/).filter(Boolean).length}
+
+// ── MARKDOWN ─────────────────────────────────────────────────
+function renderMD(text){
+  if(!window.marked)return`<div style="white-space:pre-wrap">${text.replace(/</g,'&lt;').replace(/\n/g,'<br>')}</div>`;
+  marked.setOptions({breaks:true,gfm:true});
+  const R=new marked.Renderer();
+  R.code=(code,lang)=>{
+    const l=lang||'code';
+    const hl=(()=>{
+      if(lang&&hljs.getLanguage(lang)){try{return hljs.highlight(code,{language:lang}).value}catch(e){}}
+      return hljs.highlightAuto(code).value;
+    })();
+    const id='cb_'+Math.random().toString(36).substr(2,8);
+    return`<pre><div class="chdr"><span class="clang">${l}</span><button class="ccopy" onclick="cpCode('${id}',this)">Copy</button></div><code id="${id}" class="hljs">${hl}</code></pre>`;
+  };
+  return`<div class="md">${marked.parse(text,{renderer:R})}</div>`;
+}
+function cpCode(id,btn){
+  const el=document.getElementById(id);if(!el)return;
+  navigator.clipboard.writeText(el.innerText).then(()=>{
+    btn.textContent='Copied!';btn.style.color='var(--teal)';
+    setTimeout(()=>{btn.textContent='Copy';btn.style.color=''},2000);
+  });
+}
+
+// ── CHAT MANAGEMENT ──────────────────────────────────────────
+function newChat(){
+  chats.push({title:'Chat Baru',messages:[],createdAt:Date.now()});
+  curIdx=chats.length-1;save();renderHist();loadChat();
+}
+function save(){try{localStorage.setItem('gk_v3',JSON.stringify(chats))}catch(e){}}
+function renderHist(){
+  const h=document.getElementById('hist');h.innerHTML='';
+  [...chats].reverse().forEach((c,ri)=>{
+    const i=chats.length-1-ri;
+    const item=document.createElement('div');item.className='hi'+(i===curIdx?' on':'');
+    const t=document.createElement('span');t.className='ht';t.textContent=c.title;
+    t.onclick=()=>{curIdx=i;loadChat();renderHist()};
+    const d=document.createElement('span');d.className='dx';d.innerHTML='×';
+    d.onclick=e=>{e.stopPropagation();deleteChat(i)};
+    item.appendChild(t);item.appendChild(d);h.appendChild(item);
+  });
+}
+let delIdx=null;
+function deleteChat(idx){
+  delIdx=idx;
+  document.getElementById('delModal').classList.add('on');
+  document.getElementById('cancelBtn').onclick=()=>{document.getElementById('delModal').classList.remove('on');delIdx=null};
+  document.getElementById('confirmBtn').onclick=()=>{
+    if(delIdx===null)return;
+    chats.splice(delIdx,1);
+    if(curIdx===delIdx){curIdx=null;msgsEl.innerHTML='';msgsEl.appendChild(emptyEl)}
+    else if(curIdx>delIdx)curIdx--;
+    save();renderHist();
+    document.getElementById('delModal').classList.remove('on');delIdx=null;
+  };
+}
+function loadChat(){
+  Object.keys(videoAnimators).forEach(k=>{clearInterval(videoAnimators[k]);delete videoAnimators[k]});
+  msgsEl.innerHTML='';
+  const sel=chats[curIdx];
+  if(!sel||sel.messages.length===0){msgsEl.appendChild(emptyEl);return}
+  sel.messages.forEach(m=>{
+    if(m.type==='image')addImgMsg(m.prompt,m.imageUrl,m.time,true);
+    else if(m.type==='video')addVidMsg(m.prompt,m.frames,m.time,true);
+    else addMsg(m.text,m.sender,m.time,m.isDeep,true);
+  });
+  scrollBot();
+}
+function makeAv(s){
+  const a=document.createElement('div');a.className='av '+(s==='bot'?'bot':'usr');
+  a.textContent=s==='bot'?'🤖':'🧑';return a;
+}
+
+// ── ADD TEXT MESSAGE ─────────────────────────────────────────
+function addMsg(text,sender,time,isDeep,silent){
+  if(emptyEl.parentNode)emptyEl.remove();
+  const t=time||getTime();
+  const row=document.createElement('div');row.className='row '+sender;
+  const av=makeAv(sender);
+  const mb=document.createElement('div');mb.className='mb';
+  const bub=document.createElement('div');
+  if(sender==='user'){
+    bub.className='msg user';
+    const c=document.createElement('div');c.style.cssText='white-space:pre-wrap;word-wrap:break-word';
+    c.innerHTML=text.replace(/</g,'&lt;').replace(/\n/g,'<br>');bub.appendChild(c);
+  } else {
+    bub.className='msg bot'+(isDeep?' deep':'');
+    if(isDeep){const b=document.createElement('div');b.className='dbadge';b.innerHTML='🧠 Deep Think';bub.appendChild(b)}
+    const d=document.createElement('div');d.innerHTML=renderMD(text);bub.appendChild(d);
+  }
+  const meta=document.createElement('div');meta.className='meta';
+  const te=document.createElement('span');te.className='mtime';te.textContent=t;meta.appendChild(te);
+  if(sender==='bot'){
+    const we=document.createElement('span');we.className='wc';we.textContent='~'+wc(text)+' kata';meta.appendChild(we);
+    const cpb=document.createElement('button');cpb.className='mb2';cpb.textContent='copy';
+    cpb.onclick=()=>{navigator.clipboard.writeText(text);cpb.textContent='copied ✓';cpb.classList.add('ok');setTimeout(()=>{cpb.textContent='copy';cpb.classList.remove('ok')},2000)};
+    meta.appendChild(cpb);
+    const spk=document.createElement('button');spk.className='mb2';spk.textContent='🔊';
+    spk.onclick=()=>speak(text);meta.appendChild(spk);
+  }
+  mb.appendChild(bub);mb.appendChild(meta);
+  row.appendChild(av);row.appendChild(mb);
+  msgsEl.appendChild(row);
+  if(!silent)msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+  return bub;
+}
+
+// ── STREAMING ────────────────────────────────────────────────
+function mkStream(isDeep){
+  if(emptyEl.parentNode)emptyEl.remove();
+  const row=document.createElement('div');row.className='row bot';row.id='sRow';
+  const av=makeAv('bot');
+  const mb=document.createElement('div');mb.className='mb';
+  const bub=document.createElement('div');bub.className='msg bot'+(isDeep?' deep':'');bub.id='sBub';
+  if(isDeep){const b=document.createElement('div');b.className='dbadge';b.innerHTML='🧠 Deep Think';bub.appendChild(b)}
+  const sd=document.createElement('div');sd.id='sDat';sd.innerHTML='<span class="sc"></span>';
+  bub.appendChild(sd);mb.appendChild(bub);row.appendChild(av);row.appendChild(mb);
+  msgsEl.appendChild(row);return{row,bub,sd};
+}
+function updStream(sd,txt){
+  sd.innerHTML=renderMD(txt)+'<span class="sc"></span>';
+  msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+}
+function finStream(sd,bub,txt,isDeep){
+  sd.innerHTML=renderMD(txt);
+  const meta=document.createElement('div');meta.className='meta';
+  const te=document.createElement('span');te.className='mtime';te.textContent=getTime();meta.appendChild(te);
+  const we=document.createElement('span');we.className='wc';we.textContent='~'+wc(txt)+' kata';meta.appendChild(we);
+  const cpb=document.createElement('button');cpb.className='mb2';cpb.textContent='copy';
+  cpb.onclick=()=>{navigator.clipboard.writeText(txt);cpb.textContent='copied ✓';cpb.classList.add('ok');setTimeout(()=>{cpb.textContent='copy';cpb.classList.remove('ok')},2000)};
+  meta.appendChild(cpb);
+  const spk=document.createElement('button');spk.className='mb2';spk.textContent='🔊';
+  spk.onclick=()=>speak(txt);meta.appendChild(spk);
+  bub.parentElement.appendChild(meta);
+}
+
+// ── IMAGE MESSAGE ─────────────────────────────────────────────
+function addImgMsg(prompt,imageUrl,time,silent){
+  if(emptyEl.parentNode)emptyEl.remove();
+  const t=time||getTime();
+  const row=document.createElement('div');row.className='row bot';
+  const av=makeAv('bot');
+  const mb=document.createElement('div');mb.className='mb';
+  const bub=document.createElement('div');bub.className='msg imgm';
+  const img=document.createElement('img');img.src=imageUrl;img.alt=prompt;img.loading='lazy';
+  img.onclick=()=>openLB(imageUrl);
+  const cap=document.createElement('div');cap.className='icap';cap.textContent='🖼️ '+prompt;
+  bub.appendChild(img);bub.appendChild(cap);
+  const meta=document.createElement('div');meta.className='meta';
+  const te=document.createElement('span');te.className='mtime';te.textContent=t;meta.appendChild(te);
+  const dl=document.createElement('button');dl.className='mb2';dl.textContent='⬇ simpan';
+  dl.onclick=()=>dlImg(imageUrl,prompt);meta.appendChild(dl);
+  const regen=document.createElement('button');regen.className='mb2';regen.textContent='🔄 variasi';
+  regen.onclick=()=>{setMode('image');inpEl.value=prompt;inpEl.dispatchEvent(new Event('input'));sendMsg()};
+  meta.appendChild(regen);
+  mb.appendChild(bub);mb.appendChild(meta);
+  row.appendChild(av);row.appendChild(mb);msgsEl.appendChild(row);
+  if(!silent)msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+}
+
+// ── IMAGE GENERATION — UNLIMITED CONCURRENT ───────────────────
+async function generateImage(prompt){
+  if(curIdx===null)newChat();
+  const t=getTime();
+  // Add user message
+  addMsg('🖼️ '+prompt,'user',t,false);
+  chats[curIdx].messages.push({text:'🖼️ '+prompt,sender:'user',time:t});
+  if(chats[curIdx].title==='Chat Baru')chats[curIdx].title='🖼️ '+prompt.substring(0,32);
+  renderHist();
+
+  // Create loading bubble (unique ID per request — allows many concurrent)
+  const loadId='iload_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+  if(emptyEl.parentNode)emptyEl.remove();
+  const loadRow=document.createElement('div');loadRow.id=loadId;loadRow.className='row bot';
+  const lav=makeAv('bot');
+  const lmb=document.createElement('div');lmb.className='mb';
+  const lbub=document.createElement('div');lbub.className='msg bot';
+  lbub.innerHTML=`<div class="iload">
+    <span style="font-size:13px">✨ Membuat gambar...</span>
+    <div class="ibar"><div class="ibar-f"></div></div>
+    <div class="ibadge-wrap"><span class="igenq">Pollinations Flux AI · Gratis</span></div>
+  </div>`;
+  lmb.appendChild(lbub);loadRow.appendChild(lav);loadRow.appendChild(lmb);
+  msgsEl.appendChild(loadRow);
+  msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+
+  updateQueue(1);
+
+  try{
+    const seed=Math.floor(Math.random()*999999);
+    const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=512&seed=${seed}&nologo=true&enhance=true&model=flux`;
+    // No timeout — wait as long as needed
+    await new Promise((res,rej)=>{
+      const img=new Image();
+      img.onload=res;
+      img.onerror=()=>rej(new Error('load error'));
+      img.src=url;
+    });
+    document.getElementById(loadId)?.remove();
+    const rt=getTime();
+    addImgMsg(prompt,url,rt);
+    chats[curIdx].messages.push({type:'image',prompt,imageUrl:url,time:rt});
+    save();renderHist();
+  }catch(err){
+    document.getElementById(loadId)?.remove();
+    addMsg('❌ Gagal generate gambar. Cek koneksi dan coba prompt berbeda.','bot',getTime(),false);
+  }finally{
+    updateQueue(-1);
+  }
+}
+
+// ── VIDEO GENERATION ─────────────────────────────────────────
+async function generateVideo(prompt){
+  if(curIdx===null)newChat();
+  const t=getTime();
+  addMsg('🎬 '+prompt,'user',t,false);
+  chats[curIdx].messages.push({text:'🎬 '+prompt,sender:'user',time:t});
+  if(chats[curIdx].title==='Chat Baru')chats[curIdx].title='🎬 '+prompt.substring(0,32);
+  renderHist();
+
+  const FRAMES=8;
+  if(emptyEl.parentNode)emptyEl.remove();
+  const loadRow=document.createElement('div');loadRow.id='vload';loadRow.className='row bot';
+  const lav=makeAv('bot');
+  const lmb=document.createElement('div');lmb.className='mb';
+  const lbub=document.createElement('div');lbub.className='msg bot';
+  const tg=document.createElement('div');tg.className='vgrid';
+  const ths=[];
+  for(let i=0;i<FRAMES;i++){
+    const th=document.createElement('div');th.className='vft';th.innerHTML='<div class="sp"></div>';
+    tg.appendChild(th);ths.push(th);
+  }
+  const po=document.createElement('div');po.className='vpo';
+  const pi=document.createElement('div');pi.className='vpi2';po.appendChild(pi);
+  const st=document.createElement('div');st.className='vst';st.textContent='Memuat frame 0/'+FRAMES+'...';
+  lbub.innerHTML='<div class="vload"><span>🎬 Membuat video animasi...</span></div>';
+  const vl=lbub.querySelector('.vload');
+  vl.appendChild(tg);vl.appendChild(po);vl.appendChild(st);
+  vl.insertAdjacentHTML('beforeend','<span style="font-size:11px;color:var(--text3)">Pollinations Flux · Gratis ✨</span>');
+  lmb.appendChild(lbub);loadRow.appendChild(lav);loadRow.appendChild(lmb);
+  msgsEl.appendChild(loadRow);
+  msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+
+  const motions=['','slight movement, ','gentle motion, ','soft drift, ','slow pan, ','subtle flow, ','cinematic motion, ','animation frame, '];
+  const bseed=Math.floor(Math.random()*100000);
+  const urls=[];let loaded=0;
+
+  await Promise.all(Array.from({length:FRAMES},(_,i)=>new Promise(async res=>{
+    await new Promise(r=>setTimeout(r,i*380));
+    const fp=`${motions[i%motions.length]}${prompt}, high quality, cinematic`;
+    const seed=bseed+i*137;
+    const url=`https://image.pollinations.ai/prompt/${encodeURIComponent(fp)}?width=512&height=288&seed=${seed}&nologo=true&model=flux`;
+    await new Promise(r=>{
+      const img=new Image();
+      img.onload=()=>{
+        ths[i].innerHTML='';
+        const th=document.createElement('img');th.src=url;th.style.cssText='width:100%;height:100%;object-fit:cover';
+        ths[i].appendChild(th);r();
+      };
+      img.onerror=r;img.src=url;setTimeout(r,45000);
+    });
+    urls[i]=url;loaded++;
+    pi.style.width=Math.round((loaded/FRAMES)*100)+'%';
+    st.textContent='Memuat frame '+loaded+'/'+FRAMES+'...';
+    res();
+  })));
+
+  document.getElementById('vload')?.remove();
+  const valid=urls.filter(Boolean);
+  if(!valid.length){addMsg('❌ Gagal membuat video.','bot',getTime(),false);return}
+  const rt=getTime();
+  addVidMsg(prompt,valid,rt);
+  chats[curIdx].messages.push({type:'video',prompt,frames:valid,time:rt});
+  save();renderHist();
+}
+
+function addVidMsg(prompt,frames,time,silent){
+  if(emptyEl.parentNode)emptyEl.remove();
+  if(!frames||!frames.length)return;
+  const t=time||getTime();
+  const cid='vc_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
+  const row=document.createElement('div');row.className='row bot';
+  const av=makeAv('bot');
+  const mb=document.createElement('div');mb.className='mb';
+  const bub=document.createElement('div');bub.className='msg vidm';
+  const wrap=document.createElement('div');wrap.className='vcw';
+  const cv=document.createElement('canvas');cv.id=cid;cv.width=512;cv.height=288;cv.style.cssText='display:block;width:100%;border-radius:10px';
+  const ov=document.createElement('div');ov.className='vov';ov.innerHTML='<div class="vpi">▶️</div>';
+  const vb=document.createElement('div');vb.className='vbadge';vb.textContent='AI VIDEO';
+  wrap.appendChild(cv);wrap.appendChild(ov);wrap.appendChild(vb);
+  const cap=document.createElement('div');cap.className='icap';cap.textContent='🎬 '+prompt;
+  bub.appendChild(wrap);bub.appendChild(cap);
+  const meta=document.createElement('div');meta.className='meta';
+  const te=document.createElement('span');te.className='mtime';te.textContent=t;meta.appendChild(te);
+  let playing=true;
+  const pp=document.createElement('button');pp.className='mb2';pp.textContent='⏸ pause';
+  pp.onclick=()=>{
+    playing=!playing;pp.textContent=playing?'⏸ pause':'▶ play';
+    if(playing)startAnim(cid,frames);
+    else{clearInterval(videoAnimators[cid]);delete videoAnimators[cid]}
+  };
+  wrap.onclick=()=>pp.click();
+  meta.appendChild(pp);
+  mb.appendChild(bub);mb.appendChild(meta);
+  row.appendChild(av);row.appendChild(mb);msgsEl.appendChild(row);
+  setTimeout(()=>startAnim(cid,frames),100);
+  if(!silent)msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+}
+function startAnim(cid,frames){
+  if(videoAnimators[cid])clearInterval(videoAnimators[cid]);
+  const cv=document.getElementById(cid);if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const imgs=frames.map(s=>{const i=new Image();i.crossOrigin='anonymous';i.src=s;return i});
+  let fi=0;
+  imgs[0].onload=()=>ctx.drawImage(imgs[0],0,0,cv.width,cv.height);
+  videoAnimators[cid]=setInterval(()=>{
+    const img=imgs[fi%imgs.length];
+    if(img.complete&&img.naturalWidth>0)ctx.drawImage(img,0,0,cv.width,cv.height);
+    fi=(fi+1)%imgs.length;
+  },1000/6);
+}
+
+// ── CHAT COMPLETION (STREAMING) ──────────────────────────────
+async function sendChatMsg(text){
+  if(curIdx===null)newChat();
+  const model=document.getElementById('model').value;
+  const isDeep=deepOn;
+  const t=getTime();
+
+  addMsg(text,'user',t,false);
+  chats[curIdx].messages.push({text,sender:'user',time:t});
+  if(chats[curIdx].title==='Chat Baru')
+    chats[curIdx].title=text.substring(0,34)+(text.length>34?'…':'');
+  renderHist();
+
+  const lim=isDeep?20:12;
+  const hist=chats[curIdx].messages
+    .filter(m=>m.sender&&m.text)
+    .slice(-lim)
+    .map(m=>({role:m.sender==='user'?'user':'assistant',content:m.text}));
+
+  const {row,bub,sd}=mkStream(isDeep);
+  msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+
+  let fullText='',failed=false;
+  try{
+    const resp=await fetch(OR_URL,{
+      method:'POST',
+      headers:{
+        'Authorization':'Bearer '+OR_KEY,
+        'Content-Type':'application/json',
+        'HTTP-Referer':'https://gatot-kaca-ai.app',
+        'X-Title':'Gatot Kaca AI v2'
+      },
+      body:JSON.stringify({
+        model:MODEL_MAP[model]||MODEL_MAP.llama4,
+        messages:[{role:'system',content:isDeep?SYS_DEEP:SYS_BASE},...hist],
+        stream:true,
+        max_tokens:isDeep?4096:2048,
+        temperature:isDeep?0.7:0.8
+      })
+    });
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const reader=resp.body.getReader();
+    const dec=new TextDecoder();
+    let buf='',throttle=0;
+    while(true){
+      const{done,value}=await reader.read();
+      if(done)break;
+      buf+=dec.decode(value,{stream:true});
+      const lines=buf.split('\n');buf=lines.pop();
+      for(const line of lines){
+        if(!line.startsWith('data: '))continue;
+        const d=line.slice(6).trim();
+        if(d==='[DONE]')break;
+        try{
+          const j=JSON.parse(d);
+          const delta=j.choices?.[0]?.delta?.content||'';
+          if(delta){fullText+=delta;throttle++;
+            if(throttle%14===0||delta.includes('\n'))updStream(sd,fullText);}
+        }catch(e){}
+      }
+    }
+  }catch(err){
+    console.warn('Streaming failed:',err);
+    try{
+      const res=await fetch(OR_URL,{
+        method:'POST',
+        headers:{'Authorization':'Bearer '+OR_KEY,'Content-Type':'application/json','HTTP-Referer':'https://gatot-kaca-ai.app'},
+        body:JSON.stringify({
+          model:MODEL_MAP[document.getElementById('model').value]||MODEL_MAP.llama4,
+          messages:[{role:'system',content:isDeep?SYS_DEEP:SYS_BASE},...hist],
+          max_tokens:isDeep?4096:2048,temperature:isDeep?0.7:0.8
+        })
+      });
+      const data=await res.json();
+      fullText=data.choices?.[0]?.message?.content||data.error?.message||'Terjadi kesalahan.';
+    }catch(e2){fullText='❌ Error: '+e2.message+'\n\nPastikan koneksi aktif dan coba lagi.';failed=true}
+  }
+
+  if(!fullText)fullText='Maaf, tidak ada respons. Coba lagi.';
+  finStream(sd,bub,fullText,isDeep);
+  msgsEl.scrollTo({top:msgsEl.scrollHeight,behavior:'smooth'});
+  chats[curIdx].messages.push({text:fullText,sender:'bot',time:getTime(),isDeep});
+  save();
+  if(!failed&&fullText.length<400)speak(fullText);
+}
+
+// ── MAIN SEND — image mode bypasses chatGenerating lock ──────
+async function sendMsg(){
+  const text=inpEl.value.trim();
+  if(!text)return;
+  // Image mode: fire and forget — no lock, no disable
+  if(curMode==='image'){
+    inpEl.value='';inpEl.style.height='auto';
+    generateImage(text); // intentionally not awaited — unlimited parallel
+    return;
+  }
+  // Chat / video: serialized
+  if(chatGenerating)return;
+  inpEl.value='';inpEl.style.height='auto';
+  inpEl.disabled=true;
+  document.getElementById('sendBtn').disabled=true;
+  chatGenerating=true;
+  try{
+    if(curMode==='video')await generateVideo(text);
+    else await sendChatMsg(text);
+  }finally{
+    inpEl.disabled=false;inpEl.focus();
+    document.getElementById('sendBtn').disabled=false;
+    chatGenerating=false;
+  }
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────────
+function openLB(url){document.getElementById('lb-img').src=url;document.getElementById('lb').classList.add('on')}
+function closeLB(){document.getElementById('lb').classList.remove('on')}
+function dlImg(url,prompt){
+  fetch(url).then(r=>r.blob()).then(b=>{
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);
+    a.download=(prompt||'image').substring(0,30).replace(/\s+/g,'_')+'.jpg';a.click();
+  }).catch(()=>window.open(url,'_blank'));
+}
+
+// ── SPEECH ───────────────────────────────────────────────────
+function speak(text){
+  if(!window.speechSynthesis)return;
+  const clean=text.replace(/[#*`_~\[\]>]/g,'').substring(0,500);
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(clean);
+  u.lang='id-ID';u.rate=1;u.pitch=1;
+  const v=speechSynthesis.getVoices().find(v=>v.lang==='id-ID');
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+marked.setOptions({breaks:true,gfm:true});
+renderHist();
+msgsEl.appendChild(emptyEl);
+</script>
+</body>
+</html>
